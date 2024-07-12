@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/go-xorm/xorm"
+	"xorm.io/xorm/xorm"
 )
 
 // 主机
