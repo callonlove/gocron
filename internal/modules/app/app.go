@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"github.com/ouqiang/gocron/internal/modules/setting"
-	"github.com/ouqiang/gocron/internal/modules/utils"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"github.com/callonlove/gocron/internal/modules/setting"
+	"github.com/callonlove/gocron/internal/modules/utils"
 	"github.com/ouqiang/goutil"
 )
 

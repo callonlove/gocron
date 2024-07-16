@@ -8,11 +8,11 @@ import (
 
 	macaron "gopkg.in/macaron.v1"
 
+	"github.com/callonlove/gocron/internal/modules/app"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"github.com/callonlove/gocron/internal/modules/setting"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
-	"github.com/ouqiang/gocron/internal/modules/app"
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"github.com/ouqiang/gocron/internal/modules/setting"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
 )

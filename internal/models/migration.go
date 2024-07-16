@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"xorm.io/xorm/xorm"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"xorm.io/xorm"
 )
 
 type Migration struct{}

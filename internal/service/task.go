@@ -10,14 +10,14 @@ import (
 
 	"github.com/ouqiang/goutil"
 
+	"github.com/callonlove/gocron/internal/models"
+	"github.com/callonlove/gocron/internal/modules/app"
+	"github.com/callonlove/gocron/internal/modules/httpclient"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"github.com/callonlove/gocron/internal/modules/notify"
+	rpcClient "github.com/callonlove/gocron/internal/modules/rpc/client"
+	pb "github.com/callonlove/gocron/internal/modules/rpc/proto"
 	"github.com/jakecoffman/cron"
-	"github.com/ouqiang/gocron/internal/models"
-	"github.com/ouqiang/gocron/internal/modules/app"
-	"github.com/ouqiang/gocron/internal/modules/httpclient"
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"github.com/ouqiang/gocron/internal/modules/notify"
-	rpcClient "github.com/ouqiang/gocron/internal/modules/rpc/client"
-	pb "github.com/ouqiang/gocron/internal/modules/rpc/proto"
 )
 
 var (
@@ -242,7 +242,7 @@ func (h *HTTPHandler) Run(taskModel models.Task, taskUniqueId int64) (result str
 // RPC调用执行任务
 type RPCHandler struct{}
 
-func (h *RPCHandler) Run(taskModel models.Task, taskUniqueId int64) (result string, err error) {
+func (h *RPCHandler) Run(taskModel models.Task, taskUniqueId string) (result string, err error) {
 	taskRequest := new(pb.TaskRequest)
 	taskRequest.Timeout = int32(taskModel.Timeout)
 	taskRequest.Command = taskModel.Command
@@ -251,6 +251,9 @@ func (h *RPCHandler) Run(taskModel models.Task, taskUniqueId int64) (result stri
 	for _, taskHost := range taskModel.Hosts {
 		go func(th models.TaskHostDetail) {
 			output, err := rpcClient.Exec(th.Name, th.Port, taskRequest)
+			fmt.Println("测试输出")
+			fmt.Println(output)
+			fmt.Println("测试完毕")
 			errorMessage := ""
 			if err != nil {
 				errorMessage = err.Error()
@@ -325,10 +328,10 @@ func createJob(taskModel models.Task) cron.FuncJob {
 		taskCount.Add()
 		defer taskCount.Done()
 
-		taskLogId := beforeExecJob(taskModel)
-		if taskLogId <= 0 {
-			return
-		}
+		//taskLogId := beforeExecJob(taskModel)
+		//if taskLogId <= 0 {
+		//	return
+		//}
 
 		if taskModel.Multi == 0 {
 			runInstance.add(taskModel.Id)
@@ -339,9 +342,10 @@ func createJob(taskModel models.Task) cron.FuncJob {
 		defer concurrencyQueue.Done()
 
 		logger.Infof("开始执行任务#%s#命令-%s", taskModel.Name, taskModel.Command)
-		taskResult := execJob(handler, taskModel, taskLogId)
+		//taskResult := execJob(handler, taskModel, taskLogId)
+		taskResult := execJob(handler, taskModel)
 		logger.Infof("任务完成#%s#命令-%s", taskModel.Name, taskModel.Command)
-		afterExecJob(taskModel, taskResult, taskLogId)
+		//afterExecJob(taskModel, taskResult, taskLogId)
 	}
 
 	return taskFunc
@@ -360,20 +364,19 @@ func createHandler(taskModel models.Task) Handler {
 }
 
 // 任务前置操作
-func beforeExecJob(taskModel models.Task) (taskLogId int64) {
-	if taskModel.Multi == 0 && runInstance.has(taskModel.Id) {
-		createTaskLog(taskModel, models.Cancel)
-		return
-	}
-	taskLogId, err := createTaskLog(taskModel, models.Running)
-	if err != nil {
-		logger.Error("任务开始执行#写入任务日志失败-", err)
-		return
-	}
-	logger.Debugf("任务命令-%s", taskModel.Command)
-
-	return taskLogId
-}
+//func beforeExecJob(taskModel models.Task) (taskLogId int64) {
+//	//if taskModel.Multi == 0 && runInstance.has(taskModel.Id) {
+//	//	createTaskLog(taskModel, models.Cancel)
+//	//	return
+//	//}
+//	//taskLogId, err := createTaskLog(taskModel, models.Running)
+//	//if err != nil {
+//	//	logger.Error("任务开始执行#写入任务日志失败-", err)
+//	//	return
+//	//}
+//	//logger.Debugf("任务命令-%s", taskModel.Command)
+//	return taskLogId
+//}
 
 // 任务执行后置操作
 func afterExecJob(taskModel models.Task, taskResult TaskResult, taskLogId int64) {
@@ -456,7 +459,7 @@ func SendNotification(taskModel models.Task, taskResult TaskResult) {
 		"output":           taskResult.Result,
 		"status":           statusName,
 		"task_id":          taskModel.Id,
-		"remark":  			taskModel.Remark,
+		"remark":           taskModel.Remark,
 	}
 	notify.Push(msg)
 }

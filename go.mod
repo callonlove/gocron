@@ -1,4 +1,4 @@
-module github.com/ouqiang/gocron
+module github.com/callonlove/gocron
 
 go 1.12
 
@@ -13,7 +13,6 @@ require (
 	github.com/go-macaron/inject v0.0.0-20160627170012-d8a0b8677191 // indirect
 	github.com/go-macaron/toolbox v0.0.0-20180818072302-a77f45a7ce90
 	github.com/go-sql-driver/mysql v1.7.0
-	github.com/go-xorm/builder v0.3.4 // indirect
 	github.com/golang/protobuf v1.3.1
 	github.com/jakecoffman/cron v0.0.0-20190106200828-7e2009c226a5
 	github.com/klauspost/compress v1.5.0 // indirect

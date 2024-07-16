@@ -8,9 +8,9 @@ import (
 
 	"google.golang.org/grpc/status"
 
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"github.com/ouqiang/gocron/internal/modules/rpc/grpcpool"
-	pb "github.com/ouqiang/gocron/internal/modules/rpc/proto"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"github.com/callonlove/gocron/internal/modules/rpc/grpcpool"
+	pb "github.com/callonlove/gocron/internal/modules/rpc/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 )
@@ -23,11 +23,11 @@ var (
 	errUnavailable = errors.New("无法连接远程服务器")
 )
 
-func generateTaskUniqueKey(ip string, port int, id int64) string {
-	return fmt.Sprintf("%s:%d:%d", ip, port, id)
+func generateTaskUniqueKey(ip string, port int, id string) string {
+	return fmt.Sprintf("%s:%d:%s", ip, port, id)
 }
 
-func Stop(ip string, port int, id int64) {
+func Stop(ip string, port int, id string) {
 	key := generateTaskUniqueKey(ip, port, id)
 	cancel, ok := taskMap.Load(key)
 	if !ok {

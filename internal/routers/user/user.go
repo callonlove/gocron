@@ -5,12 +5,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/callonlove/gocron/internal/models"
+	"github.com/callonlove/gocron/internal/modules/app"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"github.com/callonlove/gocron/internal/modules/utils"
+	"github.com/callonlove/gocron/internal/routers/base"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/ouqiang/gocron/internal/models"
-	"github.com/ouqiang/gocron/internal/modules/app"
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"github.com/ouqiang/gocron/internal/modules/utils"
-	"github.com/ouqiang/gocron/internal/routers/base"
 	"gopkg.in/macaron.v1"
 )
 

@@ -6,13 +6,13 @@ import (
 
 	"github.com/ouqiang/goutil"
 
+	"github.com/callonlove/gocron/internal/models"
+	"github.com/callonlove/gocron/internal/modules/logger"
+	"github.com/callonlove/gocron/internal/modules/utils"
+	"github.com/callonlove/gocron/internal/routers/base"
+	"github.com/callonlove/gocron/internal/service"
 	"github.com/go-macaron/binding"
 	"github.com/jakecoffman/cron"
-	"github.com/ouqiang/gocron/internal/models"
-	"github.com/ouqiang/gocron/internal/modules/logger"
-	"github.com/ouqiang/gocron/internal/modules/utils"
-	"github.com/ouqiang/gocron/internal/routers/base"
-	"github.com/ouqiang/gocron/internal/service"
 	"gopkg.in/macaron.v1"
 )
 
